@@ -1,25 +1,24 @@
-How to Install Software from Source Code… and Remove it Afterwards
+"Translating by syys96"
 如何从源代码安装软件并删除源代码
 ============================================================
 
 ![How to install software from source code](https://itsfoss.com/wp-content/uploads/2017/10/install-software-from-source-code-linux-800x450.jpg)
 
- _Brief: This detailed guide explains how to install a program from source code in Linux and how to remove the software installed from the source code._ 
+
  摘要：这篇教程详细地介绍了在linux上如何从源代码安装程序以及如何删除源代码的方法。
 
-One of the greatest strength of your Linux distribution is its package manager and the associated software repository. With them, you have all the necessary tools and resources to download and install a new software on your computer in a completely automated manner.
-你所拥有的linux发行版的最大优点之一就是它的包管理工具和相应的软件仓库。通过它们
+你所拥有的linux发行版的最大优点之一就是它的包管理工具和相应的软件仓库。通过它们,你可以下载所有必需的工具和资源，然后以完全自动化的方式把新的软件安装到你的电脑上。
 
-But despite all their efforts, the package maintainers cannot handle each and every use cases. Nor can they package all the software available out there. So there are still situations where you will have to compile and install a new software by yourself. As of myself, the most common reason, by far, I have to compile some software is when I need to run a very specific version. Or because I want to modify the source code or use some fancy compilation options.
+但是，无论这些包维护者如何努力，也不可能能够解决所有用户遇到的每一个问题。他们也不能够将所有的软件都打包并放在仓库中。所以有时你仍然需要自己编译、安装新的软件。对于我来说，到目前为止自己编译软件最常见的原因是我需要某个特定的版本，或者是我想要修改源代码或者使用一些特别的编译选项。
 
-If your needs belong to that latter category, there are chances you already know what you do. But for the vast majority of Linux users, compiling and installing a software from the sources for the first time might look like an initiation ceremony: somewhat frightening; but with the promise to enter a new world of possibilities and to be part of a privileged community if you overcome that.
+如果你的需求属于后一种，那么有可能你已经知道了该如何去做。但是对于绝大部分的linux用户来说，第一次从源代码编译、安装一个软件就像入会仪式一样：会有一点害怕，但如果你克服了它你就可以进入一个新的世界并成为一个特权社区的一员。
 
-[Suggested readHow To Install And Remove Software In Ubuntu [Complete Guide]][8]
+[推荐阅读：如何在UbuntuU中安装和卸载软件 [完整教程]][8]
 
-### A. Installing software from source code in Linux
 
-And that’s exactly what we will do here. For the purpose of that article, let’s say I need to install [NodeJS][9] 8.1.1 on my system. That version exactly. A version which is not available from the Debian repository:
+### A. 在linux中从源代码安装软件
 
+这正是我们接下来将要做的。为了完成我们的目标，我们需要在系统中安装 [NodeJS][9] 8.1.1这个特定的版本。这个版本在Debian仓库中是没有的:
 ```
 sh$ apt-cache madison nodejs | grep amd64
     nodejs | 6.11.1~dfsg-1 | http://deb.debian.org/debian experimental/main amd64 Packages
@@ -29,13 +28,15 @@ sh$ apt-cache madison nodejs | grep amd64
     nodejs | 0.10.29~dfsg-1~bpo70+1 | http://ftp.fr.debian.org/debian wheezy-backports/main amd64 Packages
 ```
 
-### Step 1: Getting the source code from GitHub
+### 第一步: 从GitHub获得源代码
 
-Like many open-source projects, the sources of NodeJS can be found on GitHub: [https://github.com/nodejs/node][10]
-
-So, let’s go directly there.
+和许多其它开源项目一样,NodeJS的源代码可以在GitHub上找到:: [https://github.com/nodejs/node][10]
+因此我们直接打开这个页面.
 
 ![The NodeJS official GitHub repository](https://itsfoss.com/wp-content/uploads/2017/07/nodejs-github-account.png)
+
+如果你并不熟悉GitHub、git或者其它版本控制系统，那么需要说明的是仓库包含了该软件目前的的源代码以及历年对这个软件的所有修改的记录。
+
 
 If you’re not familiar with [GitHub][11], [git][12] or any other [version control system][13] worth mentioning the repository contains the current source for the software, as well as a history of all the modifications made through the years to that software. Eventually up to the very first line written for that project. For the developers, keeping that history has many advantages. For us today, the main one is we will be able to get the sources from for the project as they were at any given point in time. More precisely, I will be able to get the sources as they were when the 8.1.1 version I want was released. Even if there were many modifications since then.
 
