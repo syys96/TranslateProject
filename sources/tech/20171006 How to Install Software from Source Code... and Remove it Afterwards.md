@@ -1,11 +1,14 @@
 How to Install Software from Source Code… and Remove it Afterwards
+如何从源代码安装软件并删除源代码
 ============================================================
 
 ![How to install software from source code](https://itsfoss.com/wp-content/uploads/2017/10/install-software-from-source-code-linux-800x450.jpg)
 
  _Brief: This detailed guide explains how to install a program from source code in Linux and how to remove the software installed from the source code._ 
+ 摘要：这篇教程详细地介绍了在linux上如何从源代码安装程序以及如何删除源代码的方法。
 
 One of the greatest strength of your Linux distribution is its package manager and the associated software repository. With them, you have all the necessary tools and resources to download and install a new software on your computer in a completely automated manner.
+你所拥有的linux发行版的最大优点之一就是它的包管理工具和相应的软件仓库。通过它们
 
 But despite all their efforts, the package maintainers cannot handle each and every use cases. Nor can they package all the software available out there. So there are still situations where you will have to compile and install a new software by yourself. As of myself, the most common reason, by far, I have to compile some software is when I need to run a very specific version. Or because I want to modify the source code or use some fancy compilation options.
 
