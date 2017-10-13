@@ -36,30 +36,25 @@ sh$ apt-cache madison nodejs | grep amd64
 
 ![The NodeJS official GitHub repository](https://itsfoss.com/wp-content/uploads/2017/07/nodejs-github-account.png)
 
-如果你并不熟悉GitHub、git或者其它版本控制系统，那么需要说明的是仓库包含了该软件目前的的源代码以及历年对这个软件的所有修改的记录。
-
-
-If you’re not familiar with [GitHub][11], [git][12] or any other [version control system][13] worth mentioning the repository contains the current source for the software, as well as a history of all the modifications made through the years to that software. Eventually up to the very first line written for that project. For the developers, keeping that history has many advantages. For us today, the main one is we will be able to get the sources from for the project as they were at any given point in time. More precisely, I will be able to get the sources as they were when the 8.1.1 version I want was released. Even if there were many modifications since then.
+如果你并不熟悉GitHub、git或者其它版本控制系统，那么需要说明的是仓库包含了该软件目前的的源代码以及历年对这个软件的所有修改的记录,并最后出现在这个项目的第一行。对于开发者来说，保存这些修改历史有许多好处。对于现在的我们来说，主要的好处就是我们可以得到这个项目在任一时期的代码。更为准确地说，尽管在8.1.1版本之后代码又做了许多修改，我仍然可以获得这个项目在8.1.1版本时发布的代码。
 
 ![Choose the v8.1.1 tag in the NodeJS GitHub repository](https://itsfoss.com/wp-content/uploads/2017/07/nodejs-github-choose-revision-tag.png)
 
-On GitHub, you can use the “branch” button to navigate between different versions of the software. [“Branch” and “tags” are somewhat related concepts in Git][14]. Basically, the developers create “branch” and “tags” to keep track of important events in the project history, like when they start working on a new feature or when they publish a release. I will not go into the details here, all you need to know is I’m looking for the version  _tagged_  “v8.1.1”
+在GitHub上,你可以通过“分支”按钮在软件的不同版本之间切换浏览 [“Branch” and “tags” are somewhat related concepts in Git][14].开发者最基本的操作包括创建“分支”和“标记”来跟踪工程开发过程中的重要事件，比如他们他们何时开始开发一个新的功能或者何时发布一个发行版。在这里我不会深入这些细节，你只需要知道我正在寻找标记为“v8.1.1”的版本。
 
 ![The NodeJS GitHub repository as it was at the time the v8.1.1 tag was created](https://itsfoss.com/wp-content/uploads/2017/07/nodejs-github-revision-811.png)
 
-After having chosen on the “v8.1.1” tag, the page is refreshed, the most obvious change being the tag now appears as part of the URL. In addition, you will notice the file change date are different too. The source tree you are now seeing is the one that existed at the time the v8.1.1 tag was created. In some sense, you can think of a version control tool like git as a time travel machine, allowing you to go back and forth into a project history.
+当我们选择了"v8.1.1"标记之后，页面随之刷新。最明显的变化就是标记现在成为了URL的一部分。另外，你会注意到文件的更改日期也与之前不同。你现在看到的资源目录也就是创建“v8.1.1”这个标记时的资源目录。在某种意义上你可以把git之类的版本控制工具当作一个时间旅行机器，这个机器允许你回到过去并进入一个项目的历史之中。
 
 ![NodeJS GitHub repository download as a ZIP button](https://itsfoss.com/wp-content/uploads/2017/07/nodejs-github-revision-download-zip.png)
 
-At this point, we can download the sources of NodeJS 8.1.1\. You can’t miss the big blue button suggesting to download the ZIP archive of the project. As of myself, I will download and extract the ZIP from the command line for the sake of the explanation. But if you prefer using a [GUI][15] tool, don’t hesitate to do that instead:
-
+现在我们可以下载NodeJS8.1.1的源代码。很明显的大蓝色按钮意为下载ZIP文件。为了更好地解释过程，我会在命令行中下载并解压提取ZIP文件。但是如果你更喜欢使用  [图形用户界面][15] 工具，你也可以那样做:
 ```
 wget https://github.com/nodejs/node/archive/v8.1.1.zip
 unzip v8.1.1.zip
 cd node-8.1.1/
 ```
-
-Downloading the ZIP archive works great. But if you want to do it “like a pro”, I would suggest using directly the `git` tool to download the sources. It is not complicated at all— and it will be a nice first contact with a tool you will often encounter:
+直接下载ZIP文件是很好的方法，但是如果你想要更为专业地完成这个步骤的话，我建议你直接使用 `git` 来下载这些资源。这个操作并不复杂，并且这也会让你开始接触到一个经常会用到的工具。
 
 ```
 # first ensure git is installed on your system
@@ -71,10 +66,7 @@ sh$ git clone --depth 1 \
 sh$ cd node/
 ```
 
-By the way, if you have any issue, just consider that first part of this article as a general introduction. Later I have more detailed explanations for Debian- and ReadHat-based distributions in order to help you troubleshoot common issues.
-
-Anyway, whenever you downloaded the source using `git` or as a ZIP archive, you should now have exactly the same source files in the current directory:
-
+顺便一提，如果到目前为止你有任何疑问的话，那么可以把这篇文章的第一部分看作一个整体的介绍。为了帮助解决你解决常规的问题，之后我会对Debian和ReadHat发行版做更为详细的介绍。
 ```
 sh$ ls
 android-configure  BUILDING.md            common.gypi      doc            Makefile   src
@@ -83,53 +75,51 @@ benchmark          CODE_OF_CONDUCT.md     CONTRIBUTING.md  lib            node.g
 BSDmakefile        COLLABORATOR_GUIDE.md  deps             LICENSE        README.md  vcbuild.bat
 ```
 
-### Step 2: Understanding the Build System of the program
+### 第二布: 理解程序的构建系统
 
-We usually talk about “compiling the sources”, but the compilation is only one of the phases required to produce a working software from its source. A build system is a set of tool and practices used to automate and articulate those different tasks in order to build entirely the software just by issuing few commands.
+我们通常说“编译源代码”，但是编译只是把源代码变成可以运行的软件的整个过程的一个部分。构建系统指的是一系列的工具和操作，它们使得这些不同的任务自动化和清晰化，以此用较少的命令来构建整个软件。
 
-If the concept is simple, the reality is somewhat more complicated. Because different projects or programming language may have different requirements. Or because of the programmer’s tastes. Or the supported platforms. Or for historical reason. Or… or.. there is an almost endless list of reasons to choose or create another build system. All that to say there are many different solutions used out there.
+如果这个概念本身非常简单，那么实际操作则更为复杂。因为不同的项目或者不同的编程语言可能有许多不同的要求。或者是程序员的癖好不同，或者是支持的系统有区别，或者是历史的原因等等……几乎有数不尽的理由去选择或者创造另一个构建系统。总而言之，在这里有多种不同的方法可以供你选择。
 
-NodeJS uses a [GNU-style build system][16]. This is a popular choice in the open source community. And once again, a good way to start your journey.
+NodeJS使用了一个 [GNU风格的构建系统][16].在开源社区中这是一个大众化的选择，并且也是开始你工作的良好途径。
 
-Writing and tuning a build system is a pretty complex task. But for the “end user”, GNU-style build systems resume themselves in using two tools: `configure` and `make`.
+编写并调试一个构建系统是一个相当复杂的工作，但是对于终端用户来说，GNU风格的构建系统为他们提供了两个有用的工具 `configure` and `make`。
 
-The `configure` file is a project-specific script that will check the destination system configuration and available feature in order to ensure the project can be built, eventually dealing with the specificities of the current platform.
+配置文件是一个与项目相关的脚本，这个脚本可以检查目标系统的配置以及可用的特性，从而保证项目能够成功构建。最终这个脚本还会当前平台的有关细节。
 
-An important part of a typical `configure` job is to build the `Makefile`. That is the file containing the instructions required to effectively build the project.
+一个典型的 `configure` 任务的重要一环是创建Makefile。Makefile包含了用于有效地构建整个项目的所有命令。
 
-The [`make` tool][17]), on the other hand, is a POSIX tool available on any Unix-like system. It will read the project-specific `Makefile` and perform the required operations to build and install your program.
+另一方面， [`make` 工具][17]是一个在类Unix系统的可移植操作系统接口工具。它可以读取项目的Makefile然后执行相应的命令来编译和安装你的程序。
 
-But, as always in the Linux world, you still have some latency to customize the build for your specific needs.
-
+但是，如同在linux世界中的那样，你依然可以为你的特殊需求制定相应的构建方法。
 ```
 ./configure --help
 ```
 
-The `configure -help` command will show you all the available configuration options. Once again, this is very project-specific. And to be honest, it is sometimes required to dig into the project before fully understand the meaning of each and every configure option.
+ `configure -help` 命令会显示所有可选的配置选项。当然，这也是与特定项目想关的。老实说，有时你需要深入项目内部才能完全理解每一个配置选项的含义。
 
-But there is at least one standard GNU Autotools option that you must know: the `--prefix` option. This has to do with the file system hierarchy and the place your software will be installed.
+但是你至少需要知道一个标准的GNU自动工具选项： `--prefix` 前缀.它与文件系统结构和你的程序将要安装的位置有关。
 
-[Suggested read8 Vim Tips And Tricks That Will Make You A Pro User][18]
+[推荐阅读的8个Vim技巧，让你成为专业的用户][18]
 
 ### Step 3: The FHS
 
-The Linux file system hierarchy on a typical distribution mostly comply with the [Filesystem Hierarchy Standard (FHS)][19]
+一个典型的linux发行版的文件系统结构大多数都遵守 [文件系统结构标准 (FHS)][19]
 
-That standard explains the purpose of the various directories of your system: `/usr`, `/tmp`, `/var` and so on.
+这个标准阐释了你的系统的各种目录如/usr,/tmp, /var等的主要功能。
 
-When using the GNU Autotools— and most other build systems— the default installation location for your new software will be `/usr/local`. Which is a good choice as according to the FSH  _“The /usr/local hierarchy is for use by the system administrator when installing software locally? It needs to be safe from being overwritten when the system software is updated. It may be used for programs and data that are shareable amongst a group of hosts, but not found in /usr.”_ 
+当我们使用GNU自动工具和其他大多数构建系统时，你的新软件的默认安装位置是 `/usr/local`。根据FSH“/usr/local目录是用于系统管理员在本地安装软件吗？这个目录需要在系统软件更新时确保不被覆盖掉，它可用于放置主机之间的，在/usr.目录找不到的公用程序和数据”，这个位置是一个很好的选择。
 
-The `/usr/local` hierarchy somehow replicates the root directory, and you will find there `/usr/local/bin` for the executable programs, `/usr/local/lib` for the libraries, `/usr/local/share` for architecture independent files and so on.
+ `/usr/local` 目录某种意义上是根目录的复制版本，你可以在 `/usr/local/bin` 找到可执行文件，在 `/usr/local/lib` 找到库文件，在 `/usr/local/share` 找到独立于体系结构的文件等。
 
-The only issue when using the `/usr/local` tree for custom software installation is the files for all your software will be mixed there. Especially, after having installed a couple of software, it will be hard to track to which file exactly of `/usr/local/bin` and `/usr/local/lib` belongs to which software. That will not cause any issue to the system though. After all, `/usr/bin` is just about the same mess. But that will become an issue the day you will want to remove a manually installed software.
+当你把 `/usr/local` 作为常规软件的安装路径时，你唯一需要注意的是你的软件会与该目录下的其它软件放在一起。尤其是当你安装了好几个软件后，很难再分清 `/usr/local/bin` 下的哪些文件和 `/usr/local/lib` 下的哪些文件属于同一个软件。当然 `/usr/bin` 也是同样的混乱，在你想要卸载一个手工安装的软件的时侯就会出现这个问题。
 
-To solve that issue, I usually prefer installing custom software in the `/opt`sub-tree instead. Once again, to quote the FHS:
+为了解决这个问题，我倾向于把常规软件安装到 `/opt`子目录下。在这里再一次引用FHS:
 
-_”/opt is reserved for the installation of add-on application software packages.
+_”/opt 目录用于安装附加的应用软件包。安装于/opt位置的软件包需要能够找到其在/opt/"package"或者/opt/"provider"的静态文件。其中"package"是这个软件包的名称，“provider”是软件提供者在LANANA的注册名称。”_
 
-A package to be installed in /opt must locate its static files in a separate /opt/<package> or /opt/<provider> directory tree, where <package> is a name that describes the software package and <provider> is the provider’s LANANA registered name.”_
+所以我们需要创建一个 `opt` 的子目录用于安装NodeJS,如果用一天我想要卸载这个软件，我就可以直接删除这个目录:
 
-So we will create a sub-directory of `/opt` specifically for our custom NodeJS installation. And if someday I want to remove that software, I will simply have to remove that directory:
 
 ```
 sh$ sudo mkdir /opt/node-v8.1.1
