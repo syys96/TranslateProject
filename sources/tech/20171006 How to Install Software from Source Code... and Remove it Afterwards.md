@@ -55,6 +55,7 @@ unzip v8.1.1.zip
 cd node-8.1.1/
 ```
 直接下载ZIP文件是很好的方法，但是如果你想要更为专业地完成这个步骤的话，我建议你直接使用 `git` 来下载这些资源。这个操作并不复杂，并且这也会让你开始接触到git这个经常会用到的工具。
+不管你用上面哪种方法下载，在当前目录下都会得到相同的源文件：
 
 ```
 # first ensure git is installed on your system
@@ -85,13 +86,13 @@ NodeJS使用了一个 [GNU风格的构建系统][16].在开源社区中这是一
 
 编写并调试一个构建系统是一个相当复杂的工作，但是对于终端用户来说，GNU风格的构建系统为他们提供了两个有用的工具 `configure` and `make`。
 
-配置文件是一个与项目相关的脚本，这个脚本可以检查目标系统的配置以及可用的特性，从而保证项目能够成功构建。最终这个脚本还会检查当前平台的有关细节。
+`configure`是一个与项目相关的脚本，这个脚本可以检查目标系统的配置以及可用的特性，从而保证项目能够成功构建。这个脚本还会检查当前平台的有关细节。
 
 一个典型的 `configure` 任务的重要一环是创建Makefile。Makefile包含了用于有效地构建整个项目的所有命令。
 
 另一方面， [`make`][17]是一个在类Unix系统的可移植操作系统接口工具。它可以读取项目的Makefile然后执行相应的命令来编译和安装你的程序。
 
-但是，如同在linux世界中的那样，你依然可以为你的特殊需求制定相应的构建方法。
+但是，如同一向在linux中的那样，你依然可以根据你的特殊需求采用相应的构建方法：
 ```
 ./configure --help
 ```
@@ -102,7 +103,7 @@ NodeJS使用了一个 [GNU风格的构建系统][16].在开源社区中这是一
 
 [推荐阅读的8个Vim技巧，让你成为专业的用户][18]
 
-### Step 3: The FHS
+### Step 3: 文件系统结构标准
 
 一个典型的linux发行版的文件系统结构绝大部分情况下都遵守 [文件系统结构标准 (FHS)][19]
 
@@ -135,34 +136,29 @@ sh$ make -j9 && echo ok
 # CPU thread/core + a provision of one extra task when a process
 # is blocked by an I/O operation.
 ```
-
-Anything but “ok” after the `make` command has completed would mean there was an error during the build process. As we ran a parallel build because of the `-j` option, it is not always easy to retrieve the error message given the large volume of output produced by the build system.
-
-In the case of issue, just restart `make`, but without the `-j` option this time. And the error should appear near the end of the output:
-
+执行完 ` make` 命令，如果除了“ok”之外还有其它提示则意味着在构建过程中出现了错误。如果使用了 ` j` 选项执行并行构建的话，我们很难从构建系统产生的大量输出中找到错误信息。
+为了解决这个问题，只需删除 `j` 选项，重新 `make`，然后错误信息就会出现在输出末尾附近。
 ```
 sh$ make
 ```
 
-Finally, once the compilation has gone to the end, you can install your software to its location by running the command:
+最后，只要编译结束，你就可以通过以下命令把你的软件安装到相应路径:
 
 ```
 sh$ sudo make install
 ```
 
-And test it:
+测试一下:
 
 ```
 sh$ /opt/node/bin/node --version
 v8.1.1
 ```
 
-### B. What if things go wrong while installing from source code?
+### B. 从源代码安装过程中出现问题怎么办？
+上面我所解释的内容你可以在大多数具有优秀文档的项目中找到，通常位于“编译指南”页面。但是这篇文章的目的是让你学会从源代码编译软件，所以有必要花一些时间去解决某些常规的问题。因此我会再重复一遍整个流程，但这一次是针对较为简洁的Debian9.0和CentOS7.0系统。这样你就可以看到我遇到的哪些问题，以及我是如何解决这些问题的。
 
-What I’ve explained above is mostly what you can see on the “build instruction” page of a well-documented project. But given this article goal is to let you compile your first software from sources, it might worth taking the time to investigate some common issues. So, I will do the whole procedure again, but this time from a fresh and minimal Debian 9.0 and CentOS 7.0 systems. So you can see the error I encountered and how I solved them.
-
-### From Debian 9.0 “Stretch”
-
+### 在Debian 9.0上
 ```
 itsfoss@debian:~$ git clone --depth 1 \
                              --branch v8.1.1 \
@@ -170,7 +166,7 @@ itsfoss@debian:~$ git clone --depth 1 \
 -bash: git: command not found
 ```
 
-This problem is quite easy to diagnosis and solve. Just install the `git` package:
+这个问题很容易分析和解决，只需要安装 `git` 包就可以了：
 
 ```
 itsfoss@debian:~$ sudo apt-get install git
@@ -189,7 +185,7 @@ itsfoss@debian:~/node$ sudo mkdir /opt/node-v8.1.1
 itsfoss@debian:~/node$ sudo ln -sT node-v8.1.1 /opt/node
 ```
 
-No problem here.
+这里没有问题。
 
 ```
 itsfoss@debian:~/node$ ./configure --prefix=/opt/node-v8.1.1/
@@ -201,7 +197,7 @@ Node.js configure error: No acceptable C compiler found!
         it in a non-standard prefix.
 ```
 
-Obviously, to compile a project, you need a compiler. NodeJS being written using the [C++ language][20], we need a C++ [compiler][21]. Here I will install `g++`, the GNU C++ compiler for that purpose:
+很明显，你需要一个编译器来编译这个项目。NodeJS是用[C++][20]编写的，因此我们需要一个C++ [编译器][21].这里我安装的是GNU C++编译器`g++`:
 
 ```
 itsfoss@debian:~/node$ sudo apt-get install g++
@@ -215,7 +211,7 @@ itsfoss@debian:~/node$ make -j9 && echo ok
 -bash: make: command not found
 ```
 
-One other missing tool. Same symptoms. Same solution:
+还缺少一个另外的工具。同样的问题同样的解决办法：
 
 ```
 itsfoss@debian:~/node$ sudo apt-get install make
@@ -231,11 +227,11 @@ itsfoss@debian:~/node$ /opt/node/bin/node --version
 v8.1.1
 ```
 
-Success!
+安装成功！
 
-Please notice: I’ve installed the various tools one by one to show how to diagnosis the compilation issues and to show you the typical solution to solve those issues. But if you search more about that topic or read other tutorials, you will discover that most distributions have “meta-packages” acting as an umbrella to install some or all the typical tools used for compiling a software. On Debian-based systems, you will probably encounter the [build-essentials][22]package for that purpose. And on Red-Hat-based distributions, that will be the  _“Development Tools”_  group.
+请注意:我一个一个地安装这些工具是为了向你演示如何分析这些编译问题以及常用的解决办法。但如果你继续搜索这个话题或者阅读其他的教程，你会发现大多数的发行版都会提供“meta-packages”这个元包，用来引导安装部分或全部的常用编译工具。在Debian系列的系统中通常是[build-essentials][22]软件包；而在Red-Hat系的发行版中，则会是_“Development Tools”_。
 
-### From CentOS 7.0
+### 在 CentOS 7.0上
 
 ```
 [itsfoss@centos ~]$ git clone --depth 1 \
@@ -245,7 +241,7 @@ Please notice: I’ve installed the various tools one by one to show how to diag
 ```
 
 Command not found? Just install it using the `yum` package manager:
-
+无法找到命令?只需用`yum`包管理工具安装git即可:
 ```
 [itsfoss@centos ~]$ sudo yum install git
 ```
@@ -276,7 +272,7 @@ Node.js configure error: No acceptable C compiler found!
 ```
 
 You guess it: NodeJS is written using the C++ language, but my system lacks the corresponding compiler. Yum to the rescue. As I’m not a regular CentOS user, I actually had to search on the Internet the exact name of the package containing the g++ compiler. Leading me to that page: [https://superuser.com/questions/590808/yum-install-gcc-g-doesnt-work-anymore-in-centos-6-4][23]
-
+你可能已经猜到: NodeJS是用C++编写的，但是我的系统缺少相应的编译器。万幸的是，我虽不经常使用CentOS，但是我在因特网上搜索到了包含g++ 编译器的软件包的确切名称，就是这个页面：[https://superuser.com/questions/590808/yum-install-gcc-g-doesnt-work-anymore-in-centos-6-4][23]
 ```
 [itsfoss@centos node]$ sudo yum install gcc-c++
 [itsfoss@centos node]$ ./configure --prefix=/opt/node-v8.1.1/ && echo ok
@@ -301,7 +297,7 @@ ok
 v8.1.1
 ```
 
-Success. Again.
+再一次安装成功。
 
 ### C. Making changes to the software installed from source code
 
