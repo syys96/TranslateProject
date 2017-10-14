@@ -240,7 +240,6 @@ v8.1.1
 -bash: git: command not found
 ```
 
-Command not found? Just install it using the `yum` package manager:
 无法找到命令?只需用`yum`包管理工具安装git即可:
 ```
 [itsfoss@centos ~]$ sudo yum install git
@@ -271,7 +270,6 @@ Node.js configure error: No acceptable C compiler found!
         it in a non-standard prefix.
 ```
 
-You guess it: NodeJS is written using the C++ language, but my system lacks the corresponding compiler. Yum to the rescue. As I’m not a regular CentOS user, I actually had to search on the Internet the exact name of the package containing the g++ compiler. Leading me to that page: [https://superuser.com/questions/590808/yum-install-gcc-g-doesnt-work-anymore-in-centos-6-4][23]
 你可能已经猜到: NodeJS是用C++编写的，但是我的系统缺少相应的编译器。万幸的是，我虽不经常使用CentOS，但是我在因特网上搜索到了包含g++ 编译器的软件包的确切名称，就是这个页面：[https://superuser.com/questions/590808/yum-install-gcc-g-doesnt-work-anymore-in-centos-6-4][23]
 ```
 [itsfoss@centos node]$ sudo yum install gcc-c++
